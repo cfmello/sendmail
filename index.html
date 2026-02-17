@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Envio de PDF Mensal</title>
+        <style>
+            body { font-family: sans-serif; display: flex; justify-content: center; padding: 50px; }
+            .card { border: 1px solid #ccc; padding: 20px; border-radius: 8px; }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <h2>Enviar Relatórios Mensais</h2>
+            <form action="/send-email" method="POST" enctype="multipart/form-data">
+                <label>Selecione os 2 PDFs:</label><br><br>
+                <input type="file" name="pdfs" accept=".pdf" multiple required><br><br>
+                <button type="submit">Enviar E-mail Agora</button>
+            </form>
+        </div>
+    </body>
+</html>
