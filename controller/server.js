@@ -14,7 +14,7 @@ app.post('/send-email', upload.array('pdfs', 2), async (req, res) => {
         service: 'gmail',
         auth: {
             user: 'maguinho@gmail.com',
-            pass: 'gcdv rgsw jngn yeeo' // Use Senhas de App do Google
+            pass: 'password' // Use Senhas de App do Google
         }
     });
 
