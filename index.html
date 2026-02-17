@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Envio de PDF Mensal</title>
         <style>
             body { font-family: sans-serif; display: flex; justify-content: center; padding: 50px; }
@@ -8,13 +10,64 @@
         </style>
     </head>
     <body>
-        <div class="card">
-            <h2>Enviar Relatórios Mensais</h2>
-            <form action="/send-email" method="POST" enctype="multipart/form-data">
-                <label>Selecione os 2 PDFs:</label><br><br>
-                <input type="file" name="pdfs" accept=".pdf" multiple required><br><br>
-                <button type="submit">Enviar E-mail Agora</button>
-            </form>
+        <div class="container mt-5">
+            <div class="card p-4 mx-auto" style="max-width: 500px;">
+                <h2>Enviar Relatórios</h2>
+                
+                <div id="alertContainer" class="mt-3"></div>
+
+                <form id="uploadForm">
+                    <div class="mb-3">
+                        <label class="form-label">Selecione os 2 PDFs:</label>
+                        <input type="file" id="pdfFiles" class="form-control" accept=".pdf" multiple required>
+                    </div>
+                    <button type="submit" id="btnSend" class="btn btn-primary w-100">Enviar E-mail</button>
+                </form>
+            </div>
         </div>
+        <script>
+            const form = document.getElementById('uploadForm');
+            const alertContainer = document.getElementById('alertContainer');
+            const btnSend = document.getElementById('btnSend');
+
+            form.onsubmit = async (e) => {
+            e.preventDefault(); // Impede o recarregamento da página
+
+            btnSend.disabled = true;
+            btnSend.innerText = 'Enviando...';
+
+            const formData = new FormData();
+            const files = document.getElementById('pdfFiles').files;
+
+            for (let i = 0; i < files.length; i++) {
+                formData.append('pdfs', files[i]);
+            }
+
+            try {
+                const response = await fetch('/send-email', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alertContainer.innerHTML = `
+                        <div class="alert alert-success" role="alert">
+                            E-mail enviado com sucesso!
+                        </div>`;
+                    form.reset(); // Limpa os campos
+                } else {
+                    throw new Error('Falha no envio');
+                }
+            } catch (error) {
+                alertContainer.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        Erro ao enviar e-mail. Tente novamente.
+                    </div>`;
+            } finally {
+                btnSend.disabled = false;
+                btnSend.innerText = 'Enviar E-mail';
+            }
+            };
+        </script>
     </body>
 </html>

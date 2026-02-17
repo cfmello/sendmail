@@ -31,9 +31,9 @@ app.post('/send-email', upload.array('pdfs', 2), async (req, res) => {
 
     try {
         await transporter.sendMail(mailOptions);
-        res.send('E-mail enviado com sucesso!');
+        res.status(200).json({ message: 'Sucesso' }); // Retorna JSON em vez de texto
     } catch (error) {
-        res.status(500).send('Erro: ' + error.message);
+        res.status(500).json({ error: error.message });
     }
 });
 
